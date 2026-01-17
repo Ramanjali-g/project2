@@ -1,0 +1,103 @@
+{
+  "timestamp": "2026-01-17T05:23:42.837838",
+  "total_tests": 19,
+  "passed_tests": 17,
+  "success_rate": 89.47368421052632,
+  "results": [
+    {
+      "test": "API Root Endpoint",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Get Categories",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Categories Data Validation",
+      "success": true,
+      "details": "Found 5 categories"
+    },
+    {
+      "test": "Admin Login",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Admin Token Received",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Customer Registration",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Customer Login",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Customer Token Received",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Provider Registration",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Provider Login",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Provider Token Received",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Get Customer Profile",
+      "success": false,
+      "details": "Status: 404, Expected: 200, Error: User not found"
+    },
+    {
+      "test": "Get Customer Bookings",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Get Admin Stats",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Get All Providers",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Get All Users",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Get All Services",
+      "success": true,
+      "details": "Status: 200"
+    },
+    {
+      "test": "Services Data Validation",
+      "success": true,
+      "details": "Found 0 services"
+    },
+    {
+      "test": "Unauthorized Access Test",
+      "success": false,
+      "details": "Status: 403, Expected: 401, Error: Not authenticated"
+    }
+  ]
+}
