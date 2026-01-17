@@ -481,7 +481,9 @@ async def get_all_users(current_user: dict = Depends(get_current_user)):
     return users
 
 @api_router.get("/admin/stats")
-async def get_admin_stats(current_user: dict = Depends(require_role([UserRole.ADMIN]))):
+async def get_admin_stats(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="Admin access required")
     total_users = await db.users.count_documents({})
     total_bookings = await db.bookings.count_documents({})
     total_providers = await db.provider_profiles.count_documents({})
