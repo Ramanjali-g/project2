@@ -56,6 +56,7 @@ class ServiceCategoryCreate(BaseModel):
     name: str
     description: str
     icon: Optional[str] = None
+    sub_services: Optional[List[str]] = None
 
 class ServiceCategoryResponse(BaseModel):
     id: str
@@ -63,6 +64,7 @@ class ServiceCategoryResponse(BaseModel):
     description: str
     icon: Optional[str] = None
     service_count: int = 0
+    sub_services: Optional[List[str]] = None
 
 class ServiceCreate(BaseModel):
     title: str
