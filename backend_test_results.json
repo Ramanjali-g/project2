@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-01-17T05:23:42.837838",
+  "timestamp": "2026-01-17T05:56:26.802549",
   "total_tests": 19,
-  "passed_tests": 17,
-  "success_rate": 89.47368421052632,
+  "passed_tests": 18,
+  "success_rate": 94.73684210526315,
   "results": [
     {
       "test": "API Root Endpoint",
@@ -17,7 +17,7 @@
     {
       "test": "Categories Data Validation",
       "success": true,
-      "details": "Found 5 categories"
+      "details": "Found 12 categories"
     },
     {
       "test": "Admin Login",
@@ -61,8 +61,8 @@
     },
     {
       "test": "Get Customer Profile",
-      "success": false,
-      "details": "Status: 404, Expected: 200, Error: User not found"
+      "success": true,
+      "details": "Status: 200"
     },
     {
       "test": "Get Customer Bookings",
@@ -92,7 +92,7 @@
     {
       "test": "Services Data Validation",
       "success": true,
-      "details": "Found 0 services"
+      "details": "Found 27 services"
     },
     {
       "test": "Unauthorized Access Test",
