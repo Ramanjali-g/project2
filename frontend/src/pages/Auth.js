@@ -218,11 +218,18 @@ export const RegisterPage = () => {
                   className="w-full bg-slate-950 border border-slate-800 rounded-lg px-4 py-3 text-slate-200 focus:ring-2 focus:ring-violet-500"
                 >
                   <option value="">Select category</option>
-                  <option value="Home Services">Home Services</option>
-                  <option value="Technical Services">Technical Services</option>
-                  <option value="Transport Services">Transport Services</option>
-                  <option value="Food Services">Food Services</option>
                   <option value="Emergency Services">Emergency Services</option>
+                  <option value="Technical & Utility Services">Technical & Utility Services</option>
+                  <option value="Home & Daily Need Services">Home & Daily Need Services</option>
+                  <option value="Printing & Business Support">Printing & Business Support</option>
+                  <option value="Transport & Travel Services">Transport & Travel Services</option>
+                  <option value="Food Services">Food Services</option>
+                  <option value="Real Estate & Event Services">Real Estate & Event Services</option>
+                  <option value="Manpower & Construction Support">Manpower & Construction Support</option>
+                  <option value="Education & Training">Education & Training</option>
+                  <option value="Agriculture Support">Agriculture Support</option>
+                  <option value="Waste Management">Waste Management</option>
+                  <option value="Open Platform Services">Open Platform Services</option>
                 </select>
               </div>
               <div>
