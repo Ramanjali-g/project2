@@ -463,8 +463,10 @@ async def get_pending_providers(current_user: dict = Depends(get_current_user)):
 async def update_provider_status(
     user_id: str,
     status: str,
-    current_user: dict = Depends(require_role([UserRole.ADMIN]))
+    current_user: dict = Depends(get_current_user)
 ):
+    if current_user.get("role") != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="Admin access required")
     await db.provider_profiles.update_one(
         {"user_id": user_id},
         {"$set": {"status": status}}
