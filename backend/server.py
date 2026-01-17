@@ -443,7 +443,9 @@ async def get_my_subscription(current_user: dict = Depends(get_current_user)):
     return None
 
 @api_router.get("/admin/providers", response_model=List[dict])
-async def get_pending_providers(current_user: dict = Depends(require_role([UserRole.ADMIN]))):
+async def get_pending_providers(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="Admin access required")
     providers = await db.provider_profiles.find({}, {"_id": 0}).to_list(100)
     result = []
     for provider in providers:
