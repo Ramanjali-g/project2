@@ -144,8 +144,10 @@ async def get_me(current_user: dict = Depends(get_current_user)):
 @api_router.post("/categories", response_model=ServiceCategoryResponse)
 async def create_category(
     category_data: ServiceCategoryCreate,
-    current_user: dict = Depends(require_role([UserRole.ADMIN]))
+    current_user: dict = Depends(get_current_user)
 ):
+    if current_user.get("role") != UserRole.ADMIN:
+        raise HTTPException(status_code=403, detail="Admin access required")
     category_dict = {
         **category_data.dict(),
         "service_count": 0,
