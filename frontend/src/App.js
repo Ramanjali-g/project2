@@ -1,53 +1,129 @@
-import { useEffect } from "react";
-import "@/App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import axios from "axios";
+import React from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './context/AuthContext';
+import { Navbar, MobileNav } from './components/Layout';
+import { Toaster } from './components/ui/sonner';
+import { HomePage, AboutPage } from './pages/Home';
+import { LoginPage, RegisterPage } from './pages/Auth';
+import { ServicesPage } from './pages/Services';
+import { CustomerDashboard, CustomerBookings } from './pages/Customer';
+import { ProviderDashboard, ProviderServices, ProviderBookings } from './pages/Provider';
+import { AdminDashboard, AdminProviders, AdminUsers } from './pages/Admin';
+import './App.css';
 
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const API = `${BACKEND_URL}/api`;
+const ProtectedRoute = ({ children, allowedRoles }) => {
+  const { user, loading } = useAuth();
 
-const Home = () => {
-  const helloWorldApi = async () => {
-    try {
-      const response = await axios.get(`${API}/`);
-      console.log(response.data.message);
-    } catch (e) {
-      console.error(e, `errored out requesting / api`);
-    }
-  };
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full"></div>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    helloWorldApi();
-  }, []);
+  if (!user) {
+    return <Navigate to="/login" />;
+  }
 
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to="/" />;
+  }
+
+  return children;
+};
+
+function AppContent() {
   return (
-    <div>
-      <header className="App-header">
-        <a
-          className="App-link"
-          href="https://emergent.sh"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <img src="https://avatars.githubusercontent.com/in/1201222?s=120&u=2686cf91179bbafbc7a71bfbc43004cf9ae1acea&v=4" />
-        </a>
-        <p className="mt-5">Building something incredible ~!</p>
-      </header>
+    <div className="App dark">
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/services" element={<ServicesPage />} />
+        
+        <Route
+          path="/customer/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['customer']}>
+              <CustomerDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/customer/bookings"
+          element={
+            <ProtectedRoute allowedRoles={['customer']}>
+              <CustomerBookings />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/provider/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['provider']}>
+              <ProviderDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/provider/services"
+          element={
+            <ProtectedRoute allowedRoles={['provider']}>
+              <ProviderServices />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/provider/bookings"
+          element={
+            <ProtectedRoute allowedRoles={['provider']}>
+              <ProviderBookings />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/dashboard"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/providers"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminProviders />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminUsers />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+      <MobileNav />
+      <Toaster position="top-right" richColors />
     </div>
   );
-};
+}
 
 function App() {
   return (
-    <div className="App">
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route index element={<Home />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
-    </div>
+    <BrowserRouter>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
 
