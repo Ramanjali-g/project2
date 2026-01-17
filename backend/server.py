@@ -501,7 +501,9 @@ async def get_admin_stats(current_user: dict = Depends(get_current_user)):
     }
 
 @api_router.get("/provider/earnings")
-async def get_provider_earnings(current_user: dict = Depends(require_role([UserRole.PROVIDER]))):
+async def get_provider_earnings(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") != UserRole.PROVIDER:
+        raise HTTPException(status_code=403, detail="Provider access required")
     provider = await db.provider_profiles.find_one({"user_id": current_user["sub"]})
     completed_bookings = await db.bookings.count_documents({
         "provider_id": current_user["sub"],
