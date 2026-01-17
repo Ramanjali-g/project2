@@ -1,1 +1,94 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Be+Vietnam+Pro:wght@400;500&family=JetBrains+Mono&display=swap');\n\n@tailwind base;\n@tailwind components;\n@tailwind utilities;\n\n@layer base {\n  :root {\n    --background: 222.2 84% 4.9%;\n    --foreground: 210 40% 98%;\n    --card: 222.2 84% 4.9%;\n    --card-foreground: 210 40% 98%;\n    --popover: 222.2 84% 4.9%;\n    --popover-foreground: 210 40% 98%;\n    --primary: 262 80% 67%;\n    --primary-foreground: 222.2 47.4% 11.2%;\n    --secondary: 188 94% 42%;\n    --secondary-foreground: 222.2 47.4% 11.2%;\n    --muted: 217.2 32.6% 17.5%;\n    --muted-foreground: 215 20.2% 65.1%;\n    --accent: 217.2 32.6% 17.5%;\n    --accent-foreground: 210 40% 98%;\n    --destructive: 0 62.8% 30.6%;\n    --destructive-foreground: 210 40% 98%;\n    --border: 217.2 32.6% 17.5%;\n    --input: 217.2 32.6% 17.5%;\n    --ring: 262 80% 67%;\n    --radius: 0.5rem;\n  }\n\n  .dark {\n    --background: 222.2 84% 4.9%;\n    --foreground: 210 40% 98%;\n    --card: 222.2 84% 4.9%;\n    --card-foreground: 210 40% 98%;\n    --popover: 222.2 84% 4.9%;\n    --popover-foreground: 210 40% 98%;\n    --primary: 262 80% 67%;\n    --primary-foreground: 222.2 47.4% 11.2%;\n    --secondary: 188 94% 42%;\n    --secondary-foreground: 222.2 47.4% 11.2%;\n    --muted: 217.2 32.6% 17.5%;\n    --muted-foreground: 215 20.2% 65.1%;\n    --accent: 217.2 32.6% 17.5%;\n    --accent-foreground: 210 40% 98%;\n    --destructive: 0 62.8% 30.6%;\n    --destructive-foreground: 210 40% 98%;\n    --border: 217.2 32.6% 17.5%;\n    --input: 217.2 32.6% 17.5%;\n    --ring: 262 80% 67%;\n  }\n}\n\n@layer base {\n  * {\n    @apply border-border;\n  }\n  body {\n    @apply bg-slate-950 text-slate-200 font-sans;\n    background-image: url(\"data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E\");\n  }\n  html {\n    @apply dark;\n  }\n  h1, h2, h3, h4, h5, h6 {\n    @apply font-heading;\n  }\n}\n\n@layer components {\n  .glass-card {\n    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;\n  }\n  \n  .neon-glow {\n    box-shadow: 0 0 10px rgba(139, 92, 246, 0.3), 0 0 20px rgba(139, 92, 246, 0.1);\n  }\n  \n  .gradient-text {\n    @apply bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent;\n  }\n}\n\n.btn-primary {\n  @apply bg-gradient-to-r from-violet-500 to-cyan-500 text-white font-medium rounded-full px-8 py-3 hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all duration-300 transform hover:-translate-y-0.5;\n}\n\n.btn-secondary {\n  @apply bg-slate-800 text-slate-200 border border-slate-700 rounded-full px-6 py-2.5 hover:bg-slate-700 transition-colors;\n}\n\n.btn-ghost {\n  @apply text-slate-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-2 transition-colors;\n}\n
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Be+Vietnam+Pro:wght@400;500&family=JetBrains+Mono&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 262 80% 67%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 188 94% 42%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 262 80% 67%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 262 80% 67%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 188 94% 42%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 262 80% 67%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-slate-950 text-slate-200 font-sans;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+  html {
+    @apply dark;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl;
+  }
+  
+  .neon-glow {
+    box-shadow: 0 0 10px rgba(139, 92, 246, 0.3), 0 0 20px rgba(139, 92, 246, 0.1);
+  }
+  
+  .gradient-text {
+    @apply bg-gradient-to-r from-violet-400 to-cyan-400 bg-clip-text text-transparent;
+  }
+}
+
+.btn-primary {
+  @apply bg-gradient-to-r from-violet-500 to-cyan-500 text-white font-medium rounded-full px-8 py-3 hover:shadow-[0_0_20px_rgba(139,92,246,0.5)] transition-all duration-300 transform hover:-translate-y-0.5;
+}
+
+.btn-secondary {
+  @apply bg-slate-800 text-slate-200 border border-slate-700 rounded-full px-6 py-2.5 hover:bg-slate-700 transition-colors;
+}
+
+.btn-ghost {
+  @apply text-slate-400 hover:text-white hover:bg-white/5 rounded-lg px-4 py-2 transition-colors;
+}\n
