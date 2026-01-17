@@ -305,8 +305,10 @@ async def update_booking_status(
 @api_router.post("/reviews", response_model=ReviewResponse)
 async def create_review(
     review_data: ReviewCreate,
-    current_user: dict = Depends(require_role([UserRole.CUSTOMER]))
+    current_user: dict = Depends(get_current_user)
 ):
+    if current_user.get("role") != UserRole.CUSTOMER:
+        raise HTTPException(status_code=403, detail="Customer access required")
     booking = await db.bookings.find_one({"_id": review_data.booking_id})
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
