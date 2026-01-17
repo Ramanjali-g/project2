@@ -174,7 +174,8 @@ async def get_categories():
             name=cat["name"],
             description=cat["description"],
             icon=cat.get("icon"),
-            service_count=service_count
+            service_count=service_count,
+            sub_services=cat.get("sub_services", [])
         ))
     return result
 
