@@ -158,10 +158,10 @@ async def create_category(
 
 @api_router.get("/categories", response_model=List[ServiceCategoryResponse])
 async def get_categories():
-    categories = await db.categories.find({}, {"_id": 0, "id": {"$toString": "$_id"}}).to_list(100)
+    categories = await db.categories.find({}, {"_id": 0}).to_list(100)
     result = []
     for cat in categories:
-        cat_id = cat.get("id")
+        cat_id = str(cat.get("_id", cat.get("id", "")))
         service_count = await db.services.count_documents({"category_id": cat_id})
         result.append(ServiceCategoryResponse(
             id=cat_id,
