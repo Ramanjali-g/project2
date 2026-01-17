@@ -214,7 +214,9 @@ async def get_services(category_id: Optional[str] = None, search: Optional[str] 
     return [ServiceResponse(id=s.get("id", ""), **s) for s in services]
 
 @api_router.get("/services/provider/me", response_model=List[ServiceResponse])
-async def get_my_services(current_user: dict = Depends(require_role([UserRole.PROVIDER]))):
+async def get_my_services(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") != UserRole.PROVIDER:
+        raise HTTPException(status_code=403, detail="Provider access required")
     services = await db.services.find({"provider_id": current_user["sub"]}, {"_id": 0}).to_list(100)
     return [ServiceResponse(id=s.get("id", ""), **s) for s in services]
 
