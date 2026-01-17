@@ -272,7 +272,9 @@ async def get_my_bookings(current_user: dict = Depends(get_current_user)):
     return [BookingResponse(id=b.get("id", ""), **b) for b in bookings]
 
 @api_router.get("/bookings/provider/me", response_model=List[BookingResponse])
-async def get_provider_bookings(current_user: dict = Depends(require_role([UserRole.PROVIDER]))):
+async def get_provider_bookings(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") != UserRole.PROVIDER:
+        raise HTTPException(status_code=403, detail="Provider access required")
     bookings = await db.bookings.find({"provider_id": current_user["sub"]}, {"_id": 0}).to_list(100)
     return [BookingResponse(id=b.get("id", ""), **b) for b in bookings]
 
