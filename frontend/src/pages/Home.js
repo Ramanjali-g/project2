@@ -1,8 +1,43 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Zap, Shield, Users, Star, MapPin, Phone, Mail, Instagram } from 'lucide-react';
+import { ArrowRight, Zap, Shield, Users, Star, MapPin, Phone, Mail, Instagram, CheckCircle } from 'lucide-react';
+import axios from 'axios';
+import { API } from '../context/AuthContext';
 
 export const HomePage = () => {
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get(`${API}/categories`);
+      setCategories(response.data);
+    } catch (error) {
+      console.error('Failed to fetch categories:', error);
+    }
+  };
+
+  const getCategoryIcon = (iconName) => {
+    const icons = {
+      'alert-circle': '🚨',
+      'wrench': '🔧',
+      'home': '🏠',
+      'printer': '🖨️',
+      'truck': '🚚',
+      'utensils': '🍽️',
+      'building': '🏢',
+      'hard-hat': '👷',
+      'book': '📚',
+      'tractor': '🚜',
+      'recycle': '♻️',
+      'grid': '📱'
+    };
+    return icons[iconName] || '⚡';
+  };
+
   return (
     <div className="min-h-screen">
       <section className="relative min-h-[90vh] flex items-center overflow-hidden">
@@ -15,7 +50,7 @@ export const HomePage = () => {
                 <span className="gradient-text block">Endless Services</span>
               </h1>
               <p className="text-lg md:text-xl text-slate-300 mb-8">
-                Connect with trusted local service providers. From home repairs to technical support, find the help you need in Vijayawada.
+                Connect with trusted local service providers. From emergency repairs to daily needs, find the help you need in Vijayawada.
               </p>
               <div className="flex flex-wrap gap-4">
                 <Link to="/services" data-testid="hero-browse-services-btn" className="btn-primary">
@@ -32,13 +67,13 @@ export const HomePage = () => {
                 </div>
                 <div className="h-12 w-px bg-slate-800"></div>
                 <div>
-                  <p className="text-3xl font-bold gradient-text">500+</p>
-                  <p className="text-slate-400 text-sm">Active Providers</p>
+                  <p className="text-3xl font-bold gradient-text">12</p>
+                  <p className="text-slate-400 text-sm">Service Categories</p>
                 </div>
                 <div className="h-12 w-px bg-slate-800"></div>
                 <div>
-                  <p className="text-3xl font-bold gradient-text">10k+</p>
-                  <p className="text-slate-400 text-sm">Jobs Completed</p>
+                  <p className="text-3xl font-bold gradient-text">24/7</p>
+                  <p className="text-slate-400 text-sm">Support</p>
                 </div>
               </div>
             </div>
@@ -57,9 +92,10 @@ export const HomePage = () => {
 
       <section className="py-20 bg-slate-900/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-4xl font-heading font-bold text-center mb-12">
+          <h2 className="text-4xl font-heading font-bold text-center mb-4">
             Why Choose <span className="gradient-text">Endless Path</span>
           </h2>
+          <p className="text-center text-slate-400 mb-12 text-lg">The most comprehensive service platform in Vijayawada</p>
           <div className="grid md:grid-cols-3 gap-8">
             <div className="glass-card p-8 hover:neon-glow transition-all">
               <div className="w-12 h-12 rounded-full bg-gradient-to-r from-violet-500 to-cyan-500 flex items-center justify-center mb-4">
@@ -90,28 +126,44 @@ export const HomePage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-heading font-bold mb-4">
-              Popular <span className="gradient-text">Service Categories</span>
+              Our <span className="gradient-text">Service Categories</span>
             </h2>
-            <p className="text-slate-400 text-lg">Find the service you need from our curated categories</p>
+            <p className="text-slate-400 text-lg">Comprehensive services for every need - The heart of our platform</p>
           </div>
-          <div className="grid md:grid-cols-5 gap-6">
-            {[
-              { name: 'Home Services', icon: '🏠', color: 'violet' },
-              { name: 'Technical', icon: '💻', color: 'cyan' },
-              { name: 'Transport', icon: '🚚', color: 'violet' },
-              { name: 'Food Services', icon: '🍽️', color: 'cyan' },
-              { name: 'Emergency', icon: '🚨', color: 'violet' },
-            ].map((cat) => (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {categories.map((category, idx) => (
               <Link
-                key={cat.name}
+                key={category.id}
                 to="/services"
-                data-testid={`category-${cat.name.toLowerCase().replace(' ', '-')}`}
-                className="glass-card p-6 text-center hover:neon-glow transition-all group"
+                data-testid={`category-${category.name.toLowerCase().replace(/\s+/g, '-')}`}
+                className="glass-card p-6 hover:neon-glow transition-all group"
               >
-                <div className="text-4xl mb-3">{cat.icon}</div>
-                <p className="font-medium group-hover:text-violet-400 transition-colors">{cat.name}</p>
+                <div className="flex items-start gap-4">
+                  <div className="text-4xl">{getCategoryIcon(category.icon)}</div>
+                  <div className="flex-1">
+                    <h3 className="text-lg font-heading font-bold mb-2 group-hover:text-violet-400 transition-colors">
+                      {category.name}
+                    </h3>
+                    <p className="text-sm text-slate-400 mb-3">{category.description}</p>
+                    {category.sub_services && category.sub_services.length > 0 && (
+                      <div className="space-y-1">
+                        {category.sub_services.slice(0, 3).map((service, i) => (
+                          <div key={i} className="flex items-center gap-2 text-xs text-slate-500">
+                            <CheckCircle size={12} className="text-violet-400" />
+                            <span>{service}</span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
               </Link>
             ))}
+          </div>
+          <div className="text-center mt-12">
+            <Link to="/services" data-testid="view-all-services-btn" className="btn-primary">
+              View All Services <ArrowRight className="inline ml-2" size={20} />
+            </Link>
           </div>
         </div>
       </section>
