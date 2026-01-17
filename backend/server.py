@@ -120,7 +120,13 @@ async def login(credentials: UserLogin):
 
 @api_router.get("/auth/me", response_model=UserResponse)
 async def get_me(current_user: dict = Depends(get_current_user)):
-    user = await db.users.find_one({"_id": current_user["sub"]})
+    from bson import ObjectId
+    try:
+        user_id = ObjectId(current_user["sub"])
+    except:
+        user_id = current_user["sub"]
+    
+    user = await db.users.find_one({"_id": user_id})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
     
