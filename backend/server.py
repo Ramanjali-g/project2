@@ -223,8 +223,10 @@ async def get_my_services(current_user: dict = Depends(get_current_user)):
 @api_router.post("/bookings", response_model=BookingResponse)
 async def create_booking(
     booking_data: BookingCreate,
-    current_user: dict = Depends(require_role([UserRole.CUSTOMER]))
+    current_user: dict = Depends(get_current_user)
 ):
+    if current_user.get("role") != UserRole.CUSTOMER:
+        raise HTTPException(status_code=403, detail="Customer access required")
     user = await db.users.find_one({"_id": current_user["sub"]})
     
     has_active_subscription = await db.subscriptions.find_one({
