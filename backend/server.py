@@ -625,17 +625,84 @@ async def startup_event():
     categories_count = await db.categories.count_documents({})
     if categories_count == 0:
         categories = [
-            {"name": "Home Services", "description": "Cleaning, Plumbing, Electrical", "icon": "home"},
-            {"name": "Technical Services", "description": "Laptop, Phone, Appliance Repair", "icon": "wrench"},
-            {"name": "Transport Services", "description": "Moving, Delivery, Logistics", "icon": "truck"},
-            {"name": "Food Services", "description": "Catering, Tiffin, Cooking", "icon": "utensils"},
-            {"name": "Emergency Services", "description": "Urgent Repairs, 24/7 Support", "icon": "alert-circle"}
+            {
+                "name": "Emergency Services",
+                "description": "Bike and car repair • Tyre puncture services • Fuel assistance",
+                "icon": "alert-circle",
+                "sub_services": ["Bike repair", "Car repair", "Tyre puncture", "Fuel assistance"]
+            },
+            {
+                "name": "Technical & Utility Services",
+                "description": "Electronics repair • Electrical works • Mobile and laptop repair",
+                "icon": "wrench",
+                "sub_services": ["Electronics repair", "Electrical works", "Mobile repair", "Laptop repair"]
+            },
+            {
+                "name": "Home & Daily Need Services",
+                "description": "Home cleaning • Water can delivery • Grocery delivery from local kirana stores",
+                "icon": "home",
+                "sub_services": ["Home cleaning", "Water can delivery", "Grocery delivery"]
+            },
+            {
+                "name": "Printing & Business Support",
+                "description": "DTP services • Visiting card printing • Pamphlets and all types of printing",
+                "icon": "printer",
+                "sub_services": ["DTP services", "Visiting cards", "Pamphlets", "Business printing"]
+            },
+            {
+                "name": "Transport & Travel Services",
+                "description": "Cab sharing • Traveling car services • Driver services",
+                "icon": "truck",
+                "sub_services": ["Cab sharing", "Car rental", "Driver services", "Travel assistance"]
+            },
+            {
+                "name": "Food Services",
+                "description": "Daily lunch box and parcel services",
+                "icon": "utensils",
+                "sub_services": ["Daily lunch box", "Parcel services", "Tiffin delivery"]
+            },
+            {
+                "name": "Real Estate & Event Services",
+                "description": "Real estate services • Event management services",
+                "icon": "building",
+                "sub_services": ["Real estate", "Event management", "Property consultation"]
+            },
+            {
+                "name": "Manpower & Construction Support",
+                "description": "Daily wage manpower • Construction support • Building material supply",
+                "icon": "hard-hat",
+                "sub_services": ["Daily wage workers", "Construction support", "Building materials"]
+            },
+            {
+                "name": "Education & Training",
+                "description": "Tuition services • Skill development and training",
+                "icon": "book",
+                "sub_services": ["Tuition services", "Skill development", "Training programs"]
+            },
+            {
+                "name": "Agriculture Support",
+                "description": "Farm labour booking • Tractor rental • Fertilizer and seed delivery",
+                "icon": "tractor",
+                "sub_services": ["Farm labour", "Tractor rental", "Equipment rental", "Fertilizer delivery"]
+            },
+            {
+                "name": "Waste Management",
+                "description": "Scrap pickup • E-waste collection and recycling",
+                "icon": "recycle",
+                "sub_services": ["Scrap pickup", "E-waste collection", "Recycling services"]
+            },
+            {
+                "name": "Open Platform Services",
+                "description": "Other businesses and individuals can register and offer services through the app",
+                "icon": "grid",
+                "sub_services": ["Custom services", "Business listings", "Individual services"]
+            }
         ]
         for cat in categories:
             cat["service_count"] = 0
             cat["created_at"] = datetime.now(timezone.utc).isoformat()
         await db.categories.insert_many(categories)
-        logger.info("Default categories created")
+        logger.info("All 12 service categories created")
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
