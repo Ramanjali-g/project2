@@ -234,8 +234,25 @@ async def get_services(category_id: Optional[str] = None, search: Optional[str] 
 async def get_my_services(current_user: dict = Depends(get_current_user)):
     if current_user.get("role") != UserRole.PROVIDER:
         raise HTTPException(status_code=403, detail="Provider access required")
-    services = await db.services.find({"provider_id": current_user["sub"]}, {"_id": 0}).to_list(100)
-    return [ServiceResponse(id=s.get("id", ""), **s) for s in services]
+    services = await db.services.find({"provider_id": current_user["sub"]}).to_list(100)
+    result = []
+    for s in services:
+        result.append(ServiceResponse(
+            id=str(s["_id"]),
+            provider_id=s["provider_id"],
+            provider_name=s["provider_name"],
+            title=s["title"],
+            description=s["description"],
+            category_id=s["category_id"],
+            category_name=s["category_name"],
+            price=s["price"],
+            duration_minutes=s["duration_minutes"],
+            location=s["location"],
+            rating=s.get("rating", 0.0),
+            reviews_count=s.get("reviews_count", 0),
+            created_at=s["created_at"]
+        ))
+    return result
 
 @api_router.post("/bookings", response_model=BookingResponse)
 async def create_booking(
