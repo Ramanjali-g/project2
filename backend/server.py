@@ -371,7 +371,13 @@ async def update_booking_status(
     status_update: BookingStatusUpdate,
     current_user: dict = Depends(get_current_user)
 ):
-    booking = await db.bookings.find_one({"_id": booking_id})
+    from bson import ObjectId
+    try:
+        booking_obj_id = ObjectId(booking_id)
+    except:
+        booking_obj_id = booking_id
+        
+    booking = await db.bookings.find_one({"_id": booking_obj_id})
     if not booking:
         raise HTTPException(status_code=404, detail="Booking not found")
     
@@ -386,7 +392,7 @@ async def update_booking_status(
             {"$inc": {"completed_jobs": 1}}
         )
     
-    await db.bookings.update_one({"_id": booking_id}, {"$set": update_data})
+    await db.bookings.update_one({"_id": booking_obj_id}, {"$set": update_data})
     return {"status": "updated"}
 
 @api_router.post("/reviews", response_model=ReviewResponse)
