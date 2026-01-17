@@ -175,8 +175,10 @@ async def get_categories():
 @api_router.post("/services", response_model=ServiceResponse)
 async def create_service(
     service_data: ServiceCreate,
-    current_user: dict = Depends(require_role([UserRole.PROVIDER]))
+    current_user: dict = Depends(get_current_user)
 ):
+    if current_user.get("role") != UserRole.PROVIDER:
+        raise HTTPException(status_code=403, detail="Provider access required")
     provider = await db.provider_profiles.find_one({"user_id": current_user["sub"]})
     if not provider or provider.get("status") != ProviderStatus.APPROVED:
         raise HTTPException(status_code=403, detail="Provider not approved yet")
