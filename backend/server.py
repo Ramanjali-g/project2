@@ -265,7 +265,9 @@ async def create_booking(
     return BookingResponse(id=str(result.inserted_id), **booking_dict)
 
 @api_router.get("/bookings/customer/me", response_model=List[BookingResponse])
-async def get_my_bookings(current_user: dict = Depends(require_role([UserRole.CUSTOMER]))):
+async def get_my_bookings(current_user: dict = Depends(get_current_user)):
+    if current_user.get("role") != UserRole.CUSTOMER:
+        raise HTTPException(status_code=403, detail="Customer access required")
     bookings = await db.bookings.find({"customer_id": current_user["sub"]}, {"_id": 0}).to_list(100)
     return [BookingResponse(id=b.get("id", ""), **b) for b in bookings]
 
