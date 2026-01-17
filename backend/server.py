@@ -268,7 +268,16 @@ async def create_booking(
 ):
     if current_user.get("role") != UserRole.CUSTOMER:
         raise HTTPException(status_code=403, detail="Customer access required")
-    user = await db.users.find_one({"_id": current_user["sub"]})
+    
+    from bson import ObjectId
+    try:
+        user_id = ObjectId(current_user["sub"])
+    except:
+        user_id = current_user["sub"]
+    
+    user = await db.users.find_one({"_id": user_id})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
     
     has_active_subscription = await db.subscriptions.find_one({
         "user_id": current_user["sub"],
@@ -280,11 +289,16 @@ async def create_booking(
         if user.get("credits", 0) < 1:
             raise HTTPException(status_code=400, detail="Insufficient credits. Please purchase a subscription.")
         await db.users.update_one(
-            {"_id": current_user["sub"]},
+            {"_id": user_id},
             {"$inc": {"credits": -1}}
         )
     
-    service = await db.services.find_one({"_id": booking_data.service_id})
+    try:
+        service_id = ObjectId(booking_data.service_id)
+    except:
+        service_id = booking_data.service_id
+        
+    service = await db.services.find_one({"_id": service_id})
     if not service:
         raise HTTPException(status_code=404, detail="Service not found")
     
